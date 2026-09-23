@@ -10,6 +10,7 @@
 </head>
 <body>
     <div id="wrapper">
+        <div class="sakura-petals" aria-hidden="true"></div>
         <div class="flag__birthday">
             <img src="./images/1.png" alt="" width="350" class="flag__left">
             <img src="./images/1.png" alt="" width="350" class="flag__right">
@@ -184,7 +185,42 @@
 
     var intervalContent;
     var intervalTitle;
+    var sakuraRainInterval;
+    const sakuraPetals = document.querySelector(".sakura-petals");
+
+    function createSakuraPetals(amount = 10){
+        const petals = document.createDocumentFragment();
+
+        for(let i = 0; i < amount; i++){
+            const petal = document.createElement("span");
+            petal.className = "sakura-petal";
+            petal.style.setProperty("--left", `${Math.random() * 100}%`);
+            petal.style.setProperty("--size", `${Math.random() * 7 + 7}px`);
+            petal.style.setProperty("--delay", `${Math.random() * 1.8}s`);
+            petal.style.setProperty("--duration", `${Math.random() * 3 + 4}s`);
+            petal.style.setProperty("--drift", `${Math.random() * 180 - 90}px`);
+            petal.style.setProperty("--rotate", `${Math.random() * 360}deg`);
+            petal.addEventListener("animationend", () => petal.remove());
+            petals.appendChild(petal);
+        }
+
+        sakuraPetals.appendChild(petals);
+    }
+
+    function startSakuraRain(){
+        clearInterval(sakuraRainInterval);
+        sakuraPetals.replaceChildren();
+        createSakuraPetals(20);
+        sakuraRainInterval = setInterval(() => createSakuraPetals(8), 900);
+    }
+
+    function stopSakuraRain(){
+        clearInterval(sakuraRainInterval);
+        sakuraPetals.replaceChildren();
+    }
+
     $("#btn__letter").on("click", function(){
+        startSakuraRain();
         birthdayMusic.play().catch(function(error){
             console.warn("Không thể phát nhạc:", error);
         });
@@ -229,6 +265,7 @@
         },6000)
     })
     $(".close").on("click", function(){
+        stopSakuraRain();
         clearInterval(intervalContent)
         document.querySelector(".title__letter").textContent = "";
         text__letter.textContent = "";

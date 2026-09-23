@@ -35,6 +35,44 @@ body {
     overflow: hidden;
     z-index: 1;
 }
+.sakura-petals{
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 20;
+}
+.sakura-petal{
+    position: absolute;
+    top: -20px;
+    left: var(--left);
+    width: var(--size);
+    height: calc(var(--size) * 1.35);
+    background: #ff9db5;
+    border-radius: 80% 20% 80% 20%;
+    opacity: 0;
+    filter: drop-shadow(0 1px 1px rgba(170, 65, 95, .22));
+    transform: rotate(var(--rotate));
+    animation: sakuraFall var(--duration) var(--delay) linear forwards;
+}
+@keyframes sakuraFall{
+    0%{
+        opacity: 0;
+        transform: translate3d(0, -20px, 0) rotate(var(--rotate));
+    }
+    10%{
+        opacity: .95;
+    }
+    100%{
+        opacity: 0;
+        transform: translate3d(var(--drift), 110vh, 0) rotate(calc(var(--rotate) + 480deg));
+    }
+}
+@media (prefers-reduced-motion: reduce){
+    .sakura-petals{
+        display: none;
+    }
+}
 .flag__birthday{
     display: flex;
     justify-content: space-between;
@@ -818,7 +856,12 @@ body {
         width: 95%;
     }
     .letter__border .letter .title__letter{
-        font-size: 2rem;
+        width: calc(100% - 120px);
+        margin-left: 120px;
+        font-size: 1.65rem;
+        line-height: 1.2;
+        text-align: center;
+        white-space: nowrap;
     }
     .content__letter .left{
         display: flex;
@@ -844,5 +887,12 @@ body {
         font-size: 1rem!important;
         height: 275px!important;
         max-height: none!important;
+    }
+}
+@media screen and (max-width:380px) {
+    .letter__border .letter .title__letter{
+        width: calc(100% - 110px);
+        margin-left: 110px;
+        font-size: 1.45rem;
     }
 }
